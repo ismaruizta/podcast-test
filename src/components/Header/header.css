@@ -1,0 +1,15 @@
+nav{
+    height: 2em;
+    border-bottom: 1px solid var(--text-color-disabled);
+    display: flex;
+    align-items: center;
+    padding: 1em;
+}
+nav a{
+    color: var(--text-color-variant-1);
+    font-weight: 700;
+    font-size: 25px;
+}
+a:hover{
+    color: var(--text-color-variant-1-hover)
+}

@@ -1,0 +1,11 @@
+.podcast-content {
+    display: flex;
+}
+
+.podcast-detail {
+    width: 30%;
+}
+
+.podcast-episodes {
+    width: 70%;
+}
