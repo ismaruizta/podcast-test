@@ -5,11 +5,11 @@ import { getPodcasts } from "../../services/api.service";
 import { Filter } from "../../components/Filter/Filter";
 import { useNavigate } from "react-router-dom";
 import { PodcastContext } from "../../contexts/podcast.context";
-import { setSession } from "../../services/session.service";
+import { SessionTokens, setSession } from "../../services/session.service";
 
 
 export const Home = () => {
-  const {podcasts, setPodcasts} = useContext(PodcastContext)
+  const { podcasts, setPodcasts } = useContext(PodcastContext)
   const navigate = useNavigate();
   const [initialPodcasts, setInitialPodcasts] = useState([] as any[]);
   const [textFilter, setTextFilter] = useState("");
@@ -27,21 +27,21 @@ export const Home = () => {
       }))
       setInitialPodcasts(podcastData);
       setPodcasts(podcastData)
-      setSession(podcastData);
+      setSession( SessionTokens.PODCASTS, podcastData);
     })
   }, [])
 
-  useEffect(()=>{
-    const filteredItems:any[] = initialPodcasts.filter((item:any) => item.title.toLowerCase().includes(textFilter.toLowerCase()));
+  useEffect(() => {
+    const filteredItems: any[] = initialPodcasts.filter((item: any) => item.title.toLowerCase().includes(textFilter.toLowerCase()));
     setPodcasts(filteredItems);
-  },[textFilter])
+  }, [textFilter])
 
-  function handleTextChange(data:any){
+  function handleTextChange(data: any) {
     setTextFilter(data);
   }
 
-  function handleCardClick(id:string){
-    navigate("podcast/"+id)
+  function handleCardClick(id: string) {
+    navigate("podcast/" + id)
   }
 
   return (

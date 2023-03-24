@@ -19,6 +19,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "server":"npm --prefix ./proxy start",
+    "start:all":"start npm run server && start npm run start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,14 +1,20 @@
 import { getEndpoint } from "./endpoint.service";
 
 export function getPodcasts(){
-    const enpoint = getEndpoint("/api/us/rss/toppodcasts/limit=100/genre=1310/json");
-    return fetch( enpoint )
+    const endpoint = getEndpoint("/us/rss/toppodcasts/limit=100/genre=1310/json");
+    return fetch( endpoint )
         .then((response)=>response.json());
 }
 
 
-export function getPodcastsDetail(id: string) {
-    const enpoint = getEndpoint("/api/lookup?id=" + id);
-    return fetch( enpoint )
+export async function getPodcastsDetail(id: string) {
+    const endpoint = getEndpoint("/lookup?id=" + id);
+    return fetch( endpoint )
         .then((response: any) => response.json())
+}
+
+export async function getPodcastSongsList(id:string){
+    const endpoint = getEndpoint("/lookup?id=" + id + "&entity=podcastEpisode")
+    return fetch( endpoint )
+        .then((response: any) => response.json()) 
 }

@@ -2,9 +2,9 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from './views/Home/Home';
 import { Detail } from './views/Podcast/Podcast';
-import { Capter } from './views/Capter';
 import { NoMatch } from './views/NoMatch';
 import { Header } from './components/Header/Header';
+import { Episode } from './views/Episode/Episode';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
             <Routes>
               <Route path='' element={<Home />} />
               <Route path="podcast/:idpod" element={<Detail />} />
-              <Route path="podcast/:idpod/episode/:idep" element={<Capter />} />
+              <Route path="podcast/:idpod/episode/:idep" element={<Episode />} />
               <Route path="*" element={<NoMatch />} />
             </Routes>
           </div>

@@ -8,4 +8,44 @@
 
 .podcast-episodes {
     width: 70%;
+    margin-left:4em;
+}
+
+.episodes-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.episodes-table th{
+    text-align: left;
+}
+
+.episodes-table .row{
+    height: 2em;
+    border-top: 2px solid var(--border-color-variant-1);
+    border-bottom: 2px solid var(--border-color-variant-1);
+}
+
+.episodes-table th{
+    height: 3em;
+}
+
+.episodes-table .even-row{
+    background-color: var(--bg-color-variant-3);
+}
+
+.episodes-list{
+    margin-top: 2em;
+    padding: 1em;
+}
+
+.podcast-duration{
+    text-align: right;
+    padding-right: 1em;
+}
+.podcast-title{
+    padding-left: 1em;
+}
+.podcast-title a{
+    color: var(--text-color-variant-1);
 }

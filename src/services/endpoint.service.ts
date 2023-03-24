@@ -1,6 +1,6 @@
 export function getEndpoint( url:string ){
     if (process.env.NODE_ENV === environments.DEV){
-        return "http://localhost:3001"+url;
+        return "http://localhost:3001/api"+url;
     }else{
         return "https://itunes.apple.com"+url;
     }
