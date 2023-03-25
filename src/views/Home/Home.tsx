@@ -10,11 +10,20 @@ import { SessionTokens, setSession } from "../../services/session.service";
 
 export const Home = () => {
   const { podcasts, setPodcasts } = useContext(PodcastContext)
+  const [filteredPodcasts, setFilteredPodcasts] = useState(podcasts)
   const navigate = useNavigate();
-  const [initialPodcasts, setInitialPodcasts] = useState([] as any[]);
   const [textFilter, setTextFilter] = useState("");
 
   useEffect(() => {
+    if (podcasts.length == 0) apiCall();
+  }, [])
+
+  useEffect(() => {
+    const filteredItems: any[] = podcasts.filter((item: any) => item.title.toLowerCase().includes(textFilter.toLowerCase()));
+    setFilteredPodcasts(filteredItems);
+  }, [textFilter])
+
+  function apiCall() {
     getPodcasts().then(data => {
       const podcastData = data.feed.entry.map(((data: any) => {
         return {
@@ -25,16 +34,11 @@ export const Home = () => {
           data
         }
       }))
-      setInitialPodcasts(podcastData);
       setPodcasts(podcastData)
-      setSession( SessionTokens.PODCASTS, podcastData);
+      setFilteredPodcasts(podcastData);
+      setSession(SessionTokens.PODCASTS, podcastData);
     })
-  }, [])
-
-  useEffect(() => {
-    const filteredItems: any[] = initialPodcasts.filter((item: any) => item.title.toLowerCase().includes(textFilter.toLowerCase()));
-    setPodcasts(filteredItems);
-  }, [textFilter])
+  }
 
   function handleTextChange(data: any) {
     setTextFilter(data);
@@ -50,7 +54,7 @@ export const Home = () => {
       <Filter tag="100" onTextChange={handleTextChange} />
       <div className="card-container">
         {
-          podcasts.map(({ title, subTitle, imgSrc, id }) => {
+          filteredPodcasts.map(({ title, subTitle, imgSrc, id }) => {
             return (
               <Card key={id} idCard={id} title={title} subTitle={subTitle} imgSrc={imgSrc} onCardClick={handleCardClick} />
             )

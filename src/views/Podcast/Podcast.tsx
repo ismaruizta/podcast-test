@@ -70,7 +70,7 @@ const episodesItem = (podcastInfo: any, podcastEpisodes: any[], navigate: Functi
                         <tr>
                             <th>Title</th>
                             <th>Date</th>
-                            <th>Duration</th>
+                            <th className="duration-th">Duration</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -39,6 +39,10 @@
     padding: 1em;
 }
 
+.duration-th{
+    text-align: right !important;
+}
+
 .podcast-duration{
     text-align: right;
     padding-right: 1em;

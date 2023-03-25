@@ -16,7 +16,6 @@ export const Episode = () => {
     useEffect(() => {
         const episodeAux = episodes.find((ep: any) => ep.trackId == idEpisode)
         setEpisode(episodeAux)
-        console.log(episodeAux)
     }, []);
 
 
