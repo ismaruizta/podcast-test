@@ -1,17 +1,16 @@
 import "./home.css"
 import { Card } from "../../components/Card/Card";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getPodcasts } from "../../services/api.service";
 import { Filter } from "../../components/Filter/Filter";
 import { useNavigate } from "react-router-dom";
-import { PodcastContext } from "../../contexts/podcast.context";
-import { SessionTokens, setSession } from "../../services/session.service";
+import useCache from "../../hooks/useCache";
 
 
 export const Home = () => {
-  const { podcasts, setPodcasts } = useContext(PodcastContext)
-  const [filteredPodcasts, setFilteredPodcasts] = useState(podcasts)
   const navigate = useNavigate();
+  const { podcasts, _setPodcasts } = useCache();
+  const [filteredPodcasts, setFilteredPodcasts] = useState(podcasts)
   const [textFilter, setTextFilter] = useState("");
 
   useEffect(() => {
@@ -23,6 +22,9 @@ export const Home = () => {
     setFilteredPodcasts(filteredItems);
   }, [textFilter])
 
+  /**
+   * @description function that is call when data is not stored
+   */
   function apiCall() {
     getPodcasts().then(data => {
       const podcastData = data.feed.entry.map(((data: any) => {
@@ -34,23 +36,29 @@ export const Home = () => {
           data
         }
       }))
-      setPodcasts(podcastData)
+      _setPodcasts(podcastData)
       setFilteredPodcasts(podcastData);
-      setSession(SessionTokens.PODCASTS, podcastData);
     })
   }
 
+  /**
+   * @description filter handler
+   * @param data 
+   */
   function handleTextChange(data: any) {
     setTextFilter(data);
   }
 
+  /**
+   * @description click in podcast handler
+   * @param id 
+   */
   function handleCardClick(id: string) {
     navigate("podcast/" + id)
   }
 
   return (
     <div className="home-container">
-
       <Filter tag="100" onTextChange={handleTextChange} />
       <div className="card-container">
         {

@@ -1,17 +1,16 @@
 import "./episode.css"
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { DetailedCard } from '../../components/DetailedCard/DetailedCard';
-import PodcastContext from '../../contexts/podcast.context';
+import useCache from "../../hooks/useCache";
 
 export const Episode = () => {
     const params = useParams();
-    const navigate = useNavigate();
     const idPodcast = params.idpod;
     const idEpisode = params.idep;
-    const { podcasts, episodes } = useContext(PodcastContext)
-    const selectedPodcast = podcasts.find((podcast: any) => podcast.id === idPodcast)
+    const { podcasts, episodes } = useCache()
     const [episode, setEpisode] = useState([])
+    const selectedPodcast = podcasts.find((podcast: any) => podcast.id === idPodcast)
 
     useEffect(() => {
         const episodeAux = episodes.find((ep: any) => ep.trackId == idEpisode)
@@ -29,6 +28,11 @@ export const Episode = () => {
     );
 }
 
+/**
+ * 
+ * @param episode object
+ * @returns the detail of an episode
+ */
 const episodeDetail = (episode: any ) => {
     return (
         <div className="episode-detail-info podcast-card">
@@ -45,6 +49,11 @@ const episodeDetail = (episode: any ) => {
     )
 }
 
+/**
+ * 
+ * @param episode object
+ * @returns the music player 
+ */
 const musicPlayer = ( episode:any ) => {
     return (
         <audio

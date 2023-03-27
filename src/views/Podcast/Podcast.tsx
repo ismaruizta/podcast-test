@@ -1,33 +1,45 @@
 import "./podcast.css"
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DetailedCard } from '../../components/DetailedCard/DetailedCard';
-import PodcastContext from '../../contexts/podcast.context';
 import { getPodcastsDetail, getPodcastSongsList } from "../../services/api.service";
 import { formatDuration } from "./podcast.util";
-import { SessionTokens, setSession } from "../../services/session.service";
+import useCache from "../../hooks/useCache";
 
 export const Detail = () => {
-    const params = useParams();
     const navigate = useNavigate();
+    const params = useParams();
     const idPodcast = params.idpod;
-    const { podcasts, episodes, setEpisodes } = useContext(PodcastContext)
+    const { podcasts, episodes, _setEpisodes } = useCache()
     const selectedPodcast = podcasts.find((podcast: any) => podcast.id === idPodcast)
     const [podcastInfo, setPodcastInfo] = useState({})
 
     useEffect(() => {
         (async () => {
-            const data = await getPodcastsDetail(idPodcast as string);
-            const podcastInfoAux = data.results.find((podcasts: any) => podcasts.kind === "podcast");
-            setPodcastInfo(podcastInfoAux);
-
-            const dataEpisodes = await getPodcastSongsList(podcastInfoAux.collectionId)
-            const podcastEpisodesAux = dataEpisodes.results.filter((podcasts: any) => podcasts.kind === "podcast-episode");
-            setEpisodes(podcastEpisodesAux);
-            setSession(SessionTokens.EPISODES, podcastEpisodesAux);
-
+            const podcastInfoAux = await podcastDetail();
+            podcastSongs(podcastInfoAux);
         })();
     }, []);
+
+    /**
+     * @description get the podcast detail info
+     */
+    async function podcastDetail(){
+        const data = await getPodcastsDetail(idPodcast as string);
+        const podcastInfoAux = data.results.find((podcasts: any) => podcasts.kind === "podcast");
+        setPodcastInfo(podcastInfoAux);
+        return podcastInfoAux;
+    }
+
+    /**
+     * @description get the podcast songs list
+     * @param podcastInfoAux 
+     */
+    async function podcastSongs( podcastInfoAux:any ){
+        const dataEpisodes = await getPodcastSongsList(podcastInfoAux.collectionId)
+        const podcastEpisodesAux = dataEpisodes.results.filter((podcasts: any) => podcasts.kind === "podcast-episode");
+        _setEpisodes(podcastEpisodesAux);
+    }
 
     return (
         <div className="podcast-content">
@@ -41,6 +53,12 @@ export const Detail = () => {
     );
 }
 
+/**
+ * @param episode 
+ * @param index 
+ * @param navigate 
+ * @returns each row of the table
+ */
 const episodeRow = (episode: any, index: number, navigate: Function) => {
     function handleSongClick() {
         navigate("episode/" + episode.trackId)
@@ -58,6 +76,12 @@ const episodeRow = (episode: any, index: number, navigate: Function) => {
     )
 }
 
+/**
+ * @param podcastInfo 
+ * @param podcastEpisodes 
+ * @param navigate 
+ * @returns a table with episodes
+ */
 const episodesItem = (podcastInfo: any, podcastEpisodes: any[], navigate: Function) => {
     return (
         <>

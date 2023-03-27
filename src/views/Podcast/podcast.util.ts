@@ -1,3 +1,8 @@
+/**
+ * @description format the duration for the table
+ * @param durationInMillis 
+ * @returns 
+ */
 export function formatDuration(durationInMillis: number) {
     const durationInSeconds = Math.floor(durationInMillis / 1000);
     const minutes = Math.floor(durationInSeconds / 60);
